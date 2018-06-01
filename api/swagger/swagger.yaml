@@ -1,0 +1,73 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: rablabla - Backend
+host: localhost:10010
+basePath: /
+# 
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /events:
+    x-swagger-router-controller: events_controller
+    get:
+      description: Returns the events of a range of weeks for a timetable to the caller
+      operationId: getEvents
+      parameters:
+        - name: url
+          in: query
+          description: The url where the rapla timetable is accessible.
+          required: true
+          type: string
+        - name: startDate
+          in: query
+          description: The first day of the week where the range starts (YYYY-MM-DD).
+          required: true
+          type: string
+        - name: endDate
+          in: query
+          description: The first day of the week where the range ends (YYYY-MM-DD).
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/EventsResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /swagger:
+    x-swagger-pipe: swagger_raw
+
+definitions:
+  EventsResponse:
+    required:
+      - events
+    properties:
+      events:
+        type: array
+        items: 
+          type: object
+          properties: 
+            title: 
+              type: string
+            persons:
+              type: string
+            resources:
+              type: string
+            startDate:
+              type: object
+            endDate:
+              type: object
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
