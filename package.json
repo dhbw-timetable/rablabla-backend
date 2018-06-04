@@ -3,15 +3,24 @@
   "version": "0.0.1",
   "private": true,
   "description": "Backend of rablabla rapla parsing system",
-  "keywords": ["rapla", "timetable", "education", "parser"],
+  "keywords": [
+    "rapla",
+    "timetable",
+    "education",
+    "parser"
+  ],
   "author": "Hendrik Ulbrich",
   "license": "MIT",
   "main": "app.js",
   "dependencies": {
     "express": "^4.12.3",
-    "swagger-express-mw": "^0.1.0"
+    "moment": "^2.22.2",
+    "rapla-parser-js": "^2.0.1",
+    "swagger-express-mw": "^0.7.0"
   },
   "devDependencies": {
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.12.0",
     "should": "^7.1.0",
     "supertest": "^1.0.0"
   },
