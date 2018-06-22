@@ -3,7 +3,6 @@ const moment = require('moment');
 
 function getEvents(req, res) {
   const { url, startDate, endDate } = req.query;
-  res.header('Access-Control-Allow-Origin', 'https://rablabla.m320trololol.com');
   try {
     parser.fetchWeeks(url, moment(startDate), moment(endDate), (events) => {
       res.json(events);

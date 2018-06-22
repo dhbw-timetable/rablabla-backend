@@ -13,6 +13,7 @@
   "license": "MIT",
   "main": "app.js",
   "dependencies": {
+    "cors": "^2.8.4",
     "express": "^4.12.3",
     "moment": "^2.22.2",
     "rapla-parser-js": "3.0.5",
