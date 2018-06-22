@@ -1,13 +1,20 @@
-var parser = require('rapla-parser-js');
-var moment = require('moment');
+const parser = require('rapla-parser-js');
+const moment = require('moment');
 
 function getEvents(req, res) {
   const { url, startDate, endDate } = req.query;
-  parser.fetchWeeks(url, moment(startDate), moment(endDate), (events) => {
-    res.json(events);
-  }, (err) => {
-    res.json(err);
-  });
+  res.set('Access-Control-Allow-Origin', 'rablabla.m320trololol.com');
+  try {
+    parser.fetchWeeks(url, moment(startDate), moment(endDate), (events) => {
+      res.json(events);
+    }, (err) => {
+      res.status(942);
+      res.send(err);
+    });
+  } catch (e) {
+    res.status(943);
+    res.send(e);
+  }
 }
 
 module.exports = {
