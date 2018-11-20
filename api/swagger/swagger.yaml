@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "0.0.1"
+  version: "0.0.2"
   title: rablabla-backend
 host: localhost:10010
 basePath: /
@@ -42,6 +42,26 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /ics:
+    x-swagger-router-controller: ics_controller
+    get:
+      description: Returns a link to an self-updating .ics file containing all events of the current year.
+      operationId: getICS
+      parameters:
+        - name: url
+          in: query
+          description: The url where the rapla timetable is accessible.
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/ICSResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /swagger:
     x-swagger-pipe: swagger_raw
 
@@ -65,6 +85,15 @@ definitions:
               type: object
             endDate:
               type: object
+  ICSResponse:
+    required:
+      - ics
+    properties:
+      ics:
+        type: object
+        properties:
+          link:
+            type: string
   ErrorResponse:
     required:
       - message
