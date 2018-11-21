@@ -1,22 +1,27 @@
-// const parser = require('rapla-parser-js');
-// const moment = require('moment');
 const fs = require('fs');
 
 const FILE_LOCATION = '/usr/local/share/rablabla/ics.json';
 
 function handleICSFile(req, res, data, url) {
-  console.log(data);
   const savedLinks = JSON.parse(data);
-  if (savedLinks.indexOf(url) !== -1) {
-    res.status(409);
-    res.send('Link already exists');
-    // TODO: return existing ics
+  console.log(savedLinks);
+  const reqICSObj = savedLinks.find(el => el.url === url);
+  if (reqICSObj) {
+    res.json({ link: reqICSObj.link });
   } else {
-    // TODO: write link into file
-    // generate first ics
-    // schedule future cronjobs
-    res.status(200);
-    res.json(req.query);
+    // TODO construct link fail-safe
+    const link = 'todo-notimplementedyet';
+    savedLinks.push({ url, link });
+    fs.writeFile(FILE_LOCATION, JSON.stringify(savedLinks), (wfErr) => {
+      if (wfErr) {
+        res.status(542);
+        res.json(wfErr);
+      } else {
+        // TODO generate first ics
+        // TODO schedule future cronjobs
+        res.json({ link });
+      }
+    });
   }
 }
 
