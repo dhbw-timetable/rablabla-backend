@@ -15,8 +15,8 @@
   "dependencies": {
     "cors": "^2.8.4",
     "express": "^4.12.3",
+    "ics": "^2.10.0",
     "moment": "^2.22.2",
-    "node-cron": "^2.0.3",
     "rapla-parser-js": "3.0.5",
     "swagger-express-mw": "^0.7.0"
   },

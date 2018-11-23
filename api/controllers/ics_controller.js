@@ -10,7 +10,7 @@ function handleICSFile(req, res, data, url) {
     res.json({ link: reqICSObj.link });
   } else {
     // TODO construct link fail-safe
-    const link = 'todo-notimplementedyet';
+    const link = 'todo-notimplementedyet-ics-controller';
     savedLinks.push({ url, link });
     fs.writeFile(FILE_LOCATION, JSON.stringify(savedLinks), (wfErr) => {
       if (wfErr) {
