@@ -3,12 +3,14 @@
 const parser = require('rapla-parser-js');
 const moment = require('moment');
 const crypto = require('crypto');
+const ics = require('ics');
+const fs = require('fs');
 
 /**
  * CLI arguments. Expected arguments:
  * 0 - string - URL of the rabla table
  */
-const args = process.argv;
+const args = ['https://rapla.dhbw-stuttgart.de/rapla?key=txB1FOi5xd1wUJBWuX8lJhGDUgtMSFmnKLgAG_NVMhA_bi91ugPaHvrpxD-lcejo'] || process.argv;
 
 if (args.length !== 1) {
   console.error(`ICS generation script called with ${args.length}, expected exactly one parameter!`);
@@ -17,13 +19,8 @@ if (args.length !== 1) {
   const keyRegex = /key=?([-a-zA-Z0-9@:%_+.~#&//=]*)/;
   const key = url.match(keyRegex)[1];
 
-  fetchData(key, (err, events) => {
-    if (err) {
-      console.error(err);
-    } else {
-      const hashedKey = hash(key);
-      saveData(events, hashedKey);
-    }
+  fetchData(url, (events) => {
+    saveData(events, hash(key));
   });
 }
 
@@ -58,7 +55,21 @@ function fetchData(url, callback) {
  * @param {string} id Id of the .ics file to be saved.
  */
 function saveData(data, id) {
-  console.log(id);
+  ics.createEvents(data, (error, value) => {
+    if (error) {
+      console.error(error);
+    } else {
+      // TODO: Write the file to the frontend
+      fs.writeFile('calendar.ics', value, (wfError) => {
+        if (wfError) {
+          console.error(wfError);
+        }
+      });
+    }
+
+    console.log(id);
+    console.log(value);
+  });
 }
 
 /**
@@ -78,7 +89,8 @@ function hash(s) {
  * @param {object} beautifulMomentObj MomentJs date
  */
 function convertToUnlovedFormat(beautifulMomentObj) {
-  return [beautifulMomentObj.year(), beautifulMomentObj.month(), // Awww no moment.js
-    beautifulMomentObj.day(), beautifulMomentObj.hours(), // Please save me from this hell
-    beautifulMomentObj.minutes()]; // complete crap
+  return [beautifulMomentObj.year(), beautifulMomentObj.month() + 1, // Awww no moment.js
+    beautifulMomentObj.date(), beautifulMomentObj.hours(), // Please save me from this hell
+    beautifulMomentObj.minutes(),
+  ]; // complete crap
 }
